@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/_fragments::head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>后台登录</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/animate.css">
+    <link rel="stylesheet" href="../../static/css/meme.css">
+</head>
+<body>
+<br>
+<br>
+<br>
+<br>
+<br>
+    <div class="m-container-small m-padded-tb-massive" style="max-width: 30em!important;">
+        <div class="ui container">
+            <div class="ui middle aligned center aligned grid">
+                <div class="column">
+                    <h2 class="ui teal image header">
+                        <div class="ui content">
+                            后台登录
+                        </div>
+                    </h2>
+                    <form class="ui large form" method="post" action="#" th:action="@{/admin/login}">
+                        <div class="ui segment">
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <i class="user icon"></i>
+                                    <input type="text" name="username" placeholder="用户名">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <i class="lock icon"></i>
+                                    <input type="password" name="password" placeholder="密码">
+                                </div>
+                            </div>
+                            <button class="ui fluid large teal submit button">登录</button>
+                        </div>
+                        <div class="ui error mini message"></div>
+                        <div class="ui mini negative message" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<br>
+<br>
+<br>
+<br>
+
+
+<!--/*/<th:block th:replace="_fragments::script">/*/-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<!--/*/</th:block>/*/-->
+
+<script type="text/javascript">
+    var browser = {
+        versions: function () {
+            var u = navigator.userAgent, app = navigator.appVersion;
+            return {     //移动终端浏览器版本信息
+                trident: u.indexOf('Trident') > -1, //IE内核
+                presto: u.indexOf('Presto') > -1, //opera内核
+                webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
+                iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+                iPad: u.indexOf('iPad') > -1, //是否iPad
+                webApp: u.indexOf('Safari') == -1 //是否web应用程序，没有头部与底部
+            };
+        }(),
+        language: (navigator.browserLanguage || navigator.language).toLowerCase()
+    }
+    if (browser.versions.mobile) {
+        //执行移动端的相关代码
+        //alert("移动端");
+        //设置移动端不显示网易云音乐插件
+        /*      onload = function () {
+                  var MusicDivShow = document.getElementById('netEasy-music');//获取指定div中的元素
+                  MusicDivShow.style.display = 'none';//控制层隐藏
+              };*/
+    } else if (!browser.versions.mobile) { //非移动端，动态加载js和div
+        //设置电脑端显示网易云音乐插件
+        onload = function () {
+            var MusicDivShow = document.getElementById('netEasy-music');//获取指定div中的元素
+            MusicDivShow.style.display = 'block';//控制层显示
+        };
+
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.color = '220,220,220';
+        script.opacity = '0.7';
+        script.zIndex = '-2';
+        script.count = '200';
+        script.src = '//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js';
+
+        $('body').append(script);
+    }
+</script>
+
+<script>
+    //导航栏的显示和隐藏
+    $(".menu.toggle").click(function () {
+        $(".m-item").toggleClass("m-mobile-hidden");
+    });
+
+    $(".ui.dropdown").dropdown({
+        on: "hover"
+    });
+
+    $(".ui.form").form({
+        fields: {
+            username: {
+                identifier: "username",
+                rules: [{
+                    type: "empty",
+                    prompt: "用户名不能为空"
+                }]
+            },
+            password: {
+                identifier: "password",
+                rules: [{
+                    type: "empty",
+                    prompt: "密码不能为空"
+                }]
+            }
+        }
+    });
+
+</script>
+
+</body>
+</html>
