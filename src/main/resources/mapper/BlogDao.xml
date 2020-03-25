@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzx.dao.BlogDao">
+
+    <resultMap id="blogType" type="blog">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="firstPicture" column="first_picture"/>
+        <result property="flag" column="flag"/>
+        <result property="views" column="views"/>
+        <result property="appreciation" column="appreciation"/>
+        <result property="shareStatement" column="share_statement"/>
+        <result property="commentabled" column="commentabled"/>
+        <result property="published" column="published"/>
+        <result property="recommend" column="recommend"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="description" column="description"/>
+        <association property="type" javaType="type">
+            <id property="id" column="tid"/>
+            <result property="name" column="name"/>
+        </association>
+    </resultMap>
+
+    <select id="findAll" resultMap="blogType">
+        select b.*, t.id as tid, t.name
+        from blog b,
+             type t
+        where b.type_id = t.id
+    </select>
+
+    <select id="findByCondition" resultMap="blogType" parameterType="com.zzx.dto.SearchBlog">
+        select b.*,t.id as tid,t.name from blog b,type t
+        <where>
+            <if test="title!=null">
+                and b.title like concat('%',#{title},'%')
+            </if>
+            <if test="typeId!=null">
+                and b.type_id = #{typeId}
+            </if>
+            and b.recommend = #{recommend} and b.type_id=t.id
+        </where>
+    </select>
+
+    <insert id="saveBlogAndTag" parameterType="com.zzx.dto.BlogAndTag">
+        insert into blog_tags (tag_id, blog_id) VALUES (#{tagId},#{blogId})
+    </insert>
+
+    <insert id="saveBlog" parameterType="blog">
+        insert into blog (id, title, content, first_picture, flag, views, appreciation, share_statement,
+                           commentabled, published, recommend, create_time, update_time, type_id, user_id,
+                           description, tag_ids) VALUES (#{id},#{title},#{content},#{firstPicture},#{flag},
+                                                          #{views},#{appreciation},#{shareStatement},#{commentabled},
+                                                          #{published},#{recommend},#{createTime},#{updateTime},#{typeId},
+                                                          #{userId},#{description},#{tagIds})
+    </insert>
+
+    <select id="findByBlogId" parameterType="long" resultType="blog">
+        select * from blog where id = #{id}
+    </select>
+
+    <insert id="updateBlog" parameterType="blog">
+        update blog set title=#{title},content=#{content},first_picture=#{firstPicture},flag=#{flag},
+                             appreciation=#{appreciation},share_statement=#{shareStatement},commentabled=#{commentabled},
+                             published=#{published},recommend=#{recommend},update_time=#{updateTime},type_id=#{typeId},
+                             description=#{description},tag_ids=#{tagIds} where id = #{id}
+    </insert>
+
+    <delete id="deleteBlogAndTag" parameterType="long">
+        delete from blog_tags where blog_id = #{id}
+    </delete>
+
+    <delete id="deleteBlogById" parameterType="long">
+        delete from blog where id=#{id}
+    </delete>
+
+</mapper>

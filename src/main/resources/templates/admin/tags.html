@@ -3,7 +3,7 @@
 <head th:replace="admin/_fragments::head(~{::title})">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>分类管理</title>
+    <title>标签管理</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
     <link rel="stylesheet" href="../../static/css/animate.css">
     <link rel="stylesheet" href="../../static/css/meme.css">
@@ -12,14 +12,14 @@
 
 <!--导航-->
 <!--这是最外面的一整条黑条-->
-<nav th:replace="admin/_fragments::menu(2)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small animated slideInLeft">
+<nav th:replace="admin/_fragments::menu(3)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small animated slideInLeft">
     <!--这是定义了一个容器-->
     <div class="ui container">
         <div class="ui inverted secondary stackable menu">
             <h2 class="ui teal header item">后台管理</h2>
             <a href="#" class="m-item item m-mobile-hidden"><i class="home icon"></i>博客</a>
-            <a href="#" class="m-item item m-mobile-hidden active"><i class="idea icon"></i>分类</a>
-            <a href="#" class="m-item item m-mobile-hidden"><i class="tags icon"></i>标签</a>
+            <a href="#" class="m-item item m-mobile-hidden"><i class="idea icon"></i>分类</a>
+            <a href="#" class="m-item item m-mobile-hidden active"><i class="tags icon"></i>标签</a>
             <div class="right m-item m-mobile-hidden menu">
                 <div class="ui dropdown item">
                     <div class="text">
@@ -44,7 +44,7 @@
 <div class="ui attached pointing menu animated slideInLeft">
     <div class="ui container">
         <div class="right menu">
-            <a href="#" th:href="@{/admin/types/input}" class="item">发布</a>
+            <a href="#" th:href="@{/admin/tags/input}" class="item">发布</a>
             <a href="#" class="active teal item">列表</a>
         </div>
     </div>
@@ -66,7 +66,7 @@
             <!--表头-->
             <thead>
                 <tr>
-                    <th><a href="#" th:href="@{/admin/types/input}" class="ui mini green basic button"><i class="plus circle icon"></i>新增</a></th>
+                    <th><a href="#" th:href="@{/admin/tags/input}" class="ui mini green basic button"><i class="plus circle icon"></i>新增</a></th>
                     <th>名称</th>
                     <th>操作</th>
                 </tr>
@@ -74,12 +74,12 @@
 
             <!--表内容-->
             <tbody>
-                <tr th:each="type,iterStat:${page.list}">
+                <tr th:each="tag,iterStat:${page.list}">
                     <td th:text="${iterStat.count}">1</td>
-                    <td th:text="${type.name}">进击的巨人</td>
+                    <td th:text="${tag.name}">进击的巨人</td>
                     <td>
-                        <a href="#" th:href="@{/admin/types/{id}/update(id=${type.id})}" class="ui mini teal basic button"><i class="edit icon"></i>编辑</a>
-                        <a href="#" onclick="return confirm('您确定要删除吗？')" th:href="@{/admin/types/{id}/delete(id=${type.id})}" class="ui mini red basic button"><i class="trash icon"></i>删除</a>
+                        <a href="#" th:href="@{/admin/tags/{id}/update(id=${tag.id})}" class="ui mini teal basic button"><i class="edit icon"></i>编辑</a>
+                        <a href="#" onclick="return confirm('您确定要删除吗？')" th:href="@{/admin/tags/{id}/delete(id=${tag.id})}" class="ui mini red basic button"><i class="trash icon"></i>删除</a>
                     </td>
                 </tr>
 
