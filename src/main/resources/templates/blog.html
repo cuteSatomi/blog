@@ -15,7 +15,8 @@
 
 <!--导航-->
 <!--这是最外面的一整条黑条-->
-<nav th:replace="_fragments::menu(1)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small animated slideInLeft">
+<nav th:replace="_fragments::menu(1)"
+     class="ui inverted attached segment m-padded-tb-mini m-shadow-small animated slideInLeft">
     <!--这是定义了一个容器-->
     <div class="ui container">
         <div class="ui inverted secondary stackable menu">
@@ -50,40 +51,42 @@
             <div class="ui horizontal link list">
                 <!--头像以及用户名信息-->
                 <div class="item">
-                    <img src="https://unsplash.it/100/100?image=1013" th:src="@{https://unsplash.it/100/100?image=1013}" alt=""
+                    <img src="https://unsplash.it/100/100?image=1013" th:src="@{${blog.firstPicture}}" alt=""
                          class="ui avatar image">
-                    <div class="content"><a href="#" class="header">zzx</a></div>
+                    <div class="content"><a href="#" class="header" th:text="${blog.user.nickname}">zzx</a></div>
                 </div>
 
                 <!--最后修改时间信息-->
                 <div class="item">
-                    <i class="calendar icon"></i>2020-3-18
+                    <i class="calendar icon"></i><span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2020-3-18</span>
                 </div>
 
                 <!--被浏览次数信息-->
                 <div class="item">
-                    <i class="eye icon"></i> 10010
+                    <i class="eye icon"></i> <span th:text="${blog.views}">10010</span>
                 </div>
             </div>
         </div>
 
         <!--图片区域-->
         <div class="ui segment attached">
-            <img src="https://picsum.photos/id/1079/4496/3000" th:src="https://picsum.photos/id/1079/4496/3000" alt="" class="ui rounded fluid image">
+            <img src="https://picsum.photos/id/1079/4496/3000" th:src="@{${blog.firstPicture}}" alt=""
+                 class="ui rounded fluid image">
         </div>
 
         <!--博客正文区域-->
         <div class="ui segment padded attached">
             <!--博客标签。(原创or转载or翻译...)-->
             <div class="ui right aligned basic segment">
-                <div class="ui pink basic label">抄袭</div>
+                <div class="ui pink basic label" th:text="${blog.flag}">抄袭</div>
             </div>
 
             <!--博客标题-->
-            <h2 class="ui centered header">事出总是突然的，而理由则是后来加上去的</h2>
+            <h2 class="ui centered header" th:text="${blog.title}">事出总是突然的，而理由则是后来加上去的</h2>
 
             <!--博客正文-->
-            <div id="content" class="typo typo-selection js-toc-content m-padded-lr-responsive m-padded-tb-large">
+            <div id="content" th:utext="${blog.content}"
+                 class="typo typo-selection js-toc-content m-padded-lr-responsive m-padded-tb-large">
                 <h2 id="section1">一、关于 <i class="serif">Typo.css</i></h2>
 
                 <pre><code class="language-css">p { color: red }</code></pre>
@@ -476,31 +479,34 @@ h5,h6{font-size:1em;}
 
             <!--博客的标签-->
             <div class="m-padded-lr-responsive">
-                <div class="ui teal basic left pointing label">方法论</div>
+                <div class="ui teal basic left pointing label" th:each="tag:${tags}" th:text="${tag.name}">方法论</div>
             </div>
 
             <!--赞赏的功能-->
             <!--赞赏的按钮-->
-            <div class="ui segment center aligned basic">
-                <button id="payButton" class="ui pink basic circular button"><i class="thumbs up icon"></i>赞赏</button>
-            </div>
-            <!--微信和支付宝的二维码-->
-            <div class="ui payMoney flowing popup transition hidden">
-                <div class="ui pink basic label">
-                    <div class="ui images" style="font-size: inherit">
-                        <div class="image">
-                            <img src="../static/images/ali_pay.jpeg" th:src="@{/images/ali_pay.jpeg}" alt="" class="ui rounded bordered image"
-                                 style="width: 150px">
-                            <div>微信</div>
-                        </div>
-                        <div class="image">
-                            <img src="../static/images/wechat_pay.jpeg" alt="" class="ui rounded bordered rounded image"
-                                 style="width: 150px">
-                            <div>支付宝</div>
+            <div th:if="${blog.appreciation}">
+                <div class="ui center aligned basic segment">
+                    <button id="payButton" class="ui orange basic circular button"><i class="ui thumbs up icon"></i>赞赏
+                    </button>
+                </div>
+                <div class="ui payQR flowing popup transition hidden">
+                    <div class="ui orange basic label">
+                        <div class="ui images">
+                            <div class="image">
+                                <!--rounded bordered 是边线和圆角-->
+                                <img class="ui image rounded bordered" th:src="@{/images/ali_pay.jpeg}"
+                                     src="../static/images/ali_pay.jpeg" style="width: 140px">
+                            </div>
+                            <div class="image">
+                                <!--rounded bordered 是边线和圆角-->
+                                <img class="ui image rounded bordered" th:src="@{/images/wechat_pay.jpeg}"
+                                     src="../static/images/wechat_pay.jpeg" style="width: 140px">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
         <!--博客的作者等信息-->
@@ -509,8 +515,10 @@ h5,h6{font-size:1em;}
                 <!--左边作者信息 比例 11:5-->
                 <div class="eleven wide column">
                     <ui class="list">
-                        <li>作者:艾伦·耶格尔(联系作者)</li>
-                        <li>发表时间:2020-3-18 21:20</li>
+                        <li>作者:<span th:text="${blog.user.username}">艾伦·耶格尔</span>(联系作者)</li>
+                        <li>发表时间:<span
+                                th:text="${#dates.format(blog.createTime,'yyyy-MM-dd HH:mm')}">2020-3-18 21:20</span>
+                        </li>
                         <li>版权声明:自由转载</li>
                         <li>公众号不准转载</li>
                     </ui>
@@ -519,7 +527,7 @@ h5,h6{font-size:1em;}
                 <!--右边二维码区域-->
                 <div class="five wide column">
                     <img src="../static/images/wechat_lanlv.jpg" alt="" class="ui right floated rounded image"
-                        th:src="@{/images/wechat_lanlv.jpg}" style="width: 120px">
+                         th:src="@{/images/wechat_lanlv.jpg}" style="width: 120px">
                 </div>
             </div>
         </div>
@@ -531,7 +539,8 @@ h5,h6{font-size:1em;}
                     <h3 class="ui dividing header">评论</h3>
                     <div class="comment">
                         <a class="avatar">
-                            <img src="https://picsum.photos/id/164/1200/800" th:src="@{https://picsum.photos/id/164/1200/800}">
+                            <img src="https://picsum.photos/id/164/1200/800"
+                                 th:src="@{https://picsum.photos/id/164/1200/800}">
                         </a>
                         <div class="content">
                             <a class="author">Matt</a>
@@ -548,7 +557,8 @@ h5,h6{font-size:1em;}
                     </div>
                     <div class="comment">
                         <a class="avatar">
-                            <img src="https://picsum.photos/id/169/2500/1662" th:src="@{https://picsum.photos/id/169/2500/1662}">
+                            <img src="https://picsum.photos/id/169/2500/1662"
+                                 th:src="@{https://picsum.photos/id/169/2500/1662}">
                         </a>
                         <div class="content">
                             <a class="author">Elliot Fu</a>
@@ -565,7 +575,8 @@ h5,h6{font-size:1em;}
                         <div class="comments">
                             <div class="comment">
                                 <a class="avatar">
-                                    <img src="https://picsum.photos/id/174/1600/589" th:src="@{https://picsum.photos/id/169/2500/1662}">
+                                    <img src="https://picsum.photos/id/174/1600/589"
+                                         th:src="@{https://picsum.photos/id/169/2500/1662}">
                                 </a>
                                 <div class="content">
                                     <a class="author">Jenny Hess</a>
@@ -584,7 +595,8 @@ h5,h6{font-size:1em;}
                     </div>
                     <div class="comment">
                         <a class="avatar">
-                            <img src="https://picsum.photos/id/199/1600/589" th:src="@{https://picsum.photos/id/169/2500/1662}">
+                            <img src="https://picsum.photos/id/199/1600/589"
+                                 th:src="@{https://picsum.photos/id/169/2500/1662}">
                         </a>
                         <div class="content">
                             <a class="author">Joe Henderson</a>
@@ -671,7 +683,7 @@ h5,h6{font-size:1em;}
                 <div class="ui inverted link list">
                     <div class="item">
                         <img src="../static/images/wechat_color.jpeg" class="ui rounded image" alt=""
-                            th:src="@{/images/wechat_color.jpeg}" style="width: 130px">
+                             th:src="@{/images/wechat_color.jpeg}" style="width: 130px">
                     </div>
                 </div>
             </div>
@@ -705,9 +717,8 @@ h5,h6{font-size:1em;}
         <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2019-2020 Designed by zzx</p>
 
     </div>
-
-
 </footer>
+
 <!--/*/<th:block th:replace="_fragments::script">/*/-->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
@@ -716,7 +727,8 @@ h5,h6{font-size:1em;}
 <script src="../static/lib/tocbot/tocbot.min.js"></script>
 <script src="../static/lib/qrcode/qrcode.min.js"></script>
 <script src="../static/lib/waypoints/jquery.waypoints.min.js"></script>
-<!--/*/<th:block>/*/-->
+<!--/*/</th:block>/*/-->
+
 <script type="text/javascript">
     var browser = {
         versions: function () {
@@ -771,17 +783,17 @@ h5,h6{font-size:1em;}
     }
 </script>
 
-<script>
+<script th:inline="javascript">
     //导航栏的显示和隐藏
     $(".menu.toggle").click(function () {
         $(".m-item").toggleClass("m-mobile-hidden");
     });
 
     //赞赏按钮的触发动作
-    $("#payButton").popup({
-        popup: $(".payMoney.popup"),
-        on: "click",
-        position: "bottom center"
+    $('#payButton').popup({
+        popup: $('.payQR.popup'),
+        on: 'click',
+        position: 'bottom center'
     });
 
     //初始化引入的目录插件
@@ -804,13 +816,15 @@ h5,h6{font-size:1em;}
     });
 
     //微信二维码生成
+    var serurl="127.0.0.1:8080";
+    var url = /*[[@{/blog/{id}(id=${blog.id}})}]]*/"";
     var qrcode = new QRCode("qrcode", {
-        text: "http://jindo.dev.naver.com/collie",
+        text: serurl+url,
         width: 110,
         height: 110,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
     });
 
     //微信二维码弹出
@@ -822,13 +836,13 @@ h5,h6{font-size:1em;}
 
     //定义去顶部按钮
     $("#goTop").click(function () {
-        $(window).scrollTo(0,1000);
+        $(window).scrollTo(0, 1000);
     });
 
     //滑动侦测
     var waypoint = new Waypoint({
         element: document.getElementById('waypoint'),
-        handler: function(direction) {
+        handler: function (direction) {
             if (direction == 'down') {
                 $('#toolbar').show(1000);
             } else {

@@ -4,9 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.zzx.dao.BlogDao;
 import com.zzx.dto.BlogAndTag;
 import com.zzx.dto.SearchBlog;
+import com.zzx.exception.NotFountException;
 import com.zzx.pojo.Blog;
 import com.zzx.pojo.User;
 import com.zzx.service.BlogService;
+import com.zzx.util.MarkdownUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,7 +74,7 @@ public class BlogServiceImpl implements BlogService {
         List<Long> tagIds = convert2List(blog.getTagIds());
 
         for (Long tagId : tagIds) {
-            blogDao.saveBlogAndTag(new BlogAndTag(blog.getId(),tagId));
+            blogDao.saveBlogAndTag(new BlogAndTag(blog.getId(), tagId));
         }
     }
 
@@ -87,5 +89,27 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public List<Blog> findByCondition(Integer page, Integer pageSize, SearchBlog searchBlog) {
         return blogDao.findByCondition(searchBlog);
+    }
+
+    @Override
+    public List<Blog> findRecommendTopBlogs(Integer size) {
+        return blogDao.findRecommendTopBlogs(size);
+    }
+
+    @Override
+    public List<Blog> findByTitleOrContent(Integer page, Integer pageSize, String query) {
+        PageHelper.startPage(page, pageSize);
+        return blogDao.findByTitleOrContent(query);
+    }
+
+    @Override
+    public Blog findAndConvert(Long id) {
+        Blog blog = blogDao.findByBlogId(id);
+        if(blog==null){
+            throw new  NotFountException("该博客不存在");
+        }
+        String content = blog.getContent();
+        blog.setContent(MarkdownUtils.markdownToHtmlExtensions(content));
+        return blog;
     }
 }

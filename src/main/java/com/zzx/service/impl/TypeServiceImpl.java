@@ -19,7 +19,7 @@ public class TypeServiceImpl implements TypeService {
 
     @Override
     public List<Type> findAll(Integer page, Integer pageSize) {
-        PageHelper.startPage(page,pageSize);
+        PageHelper.startPage(page, pageSize);
         return typeDao.findAll();
     }
 
@@ -46,5 +46,10 @@ public class TypeServiceImpl implements TypeService {
     @Override
     public Type findByTypeName(String typeName) {
         return typeDao.findByTypeName(typeName);
+    }
+
+    @Override
+    public List<Type> findTopTypes(Integer size) {
+        return typeDao.findTopTypes(size);
     }
 }

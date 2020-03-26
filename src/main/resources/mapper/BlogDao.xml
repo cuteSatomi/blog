@@ -16,19 +16,45 @@
         <result property="commentabled" column="commentabled"/>
         <result property="published" column="published"/>
         <result property="recommend" column="recommend"/>
+        <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
         <result property="description" column="description"/>
+        <result property="typeId" column="type_id"/>
         <association property="type" javaType="type">
             <id property="id" column="tid"/>
             <result property="name" column="name"/>
         </association>
+        <association property="user" javaType="user">
+            <result property="nickname" column="nickname"/>
+            <result property="username" column="username"/>
+        </association>
     </resultMap>
 
     <select id="findAll" resultMap="blogType">
-        select b.*, t.id as tid, t.name
+        select b.*, t.id as tid, t.name, u.nickname, u.username
         from blog b,
-             type t
+             type t,
+             user u
         where b.type_id = t.id
+          and u.id = b.user_id
+        order by b.update_time desc
+    </select>
+
+    <select id="findRecommendTopBlogs" resultType="blog" parameterType="int">
+        select *
+        from blog
+        where recommend = true
+        limit 0,#{size}
+    </select>
+
+    <select id="findByTitleOrContent" parameterType="java.lang.String" resultMap="blogType">
+        select b.*,t.id as tid,t.name,u.username,u.nickname from blog b,type t,user u
+        <where>
+            <if test="query!=null">
+                and (b.title like concat('%',#{query},'%') or b.content like concat('%',#{query},'%'))
+            </if>
+        </where>
+        and u.id=b.user_id and t.id=b.type_id order by b.update_time desc
     </select>
 
     <select id="findByCondition" resultMap="blogType" parameterType="com.zzx.dto.SearchBlog">
@@ -45,35 +71,59 @@
     </select>
 
     <insert id="saveBlogAndTag" parameterType="com.zzx.dto.BlogAndTag">
-        insert into blog_tags (tag_id, blog_id) VALUES (#{tagId},#{blogId})
+        insert into blog_tags (tag_id, blog_id)
+        VALUES (#{tagId}, #{blogId})
     </insert>
 
     <insert id="saveBlog" parameterType="blog">
         insert into blog (id, title, content, first_picture, flag, views, appreciation, share_statement,
-                           commentabled, published, recommend, create_time, update_time, type_id, user_id,
-                           description, tag_ids) VALUES (#{id},#{title},#{content},#{firstPicture},#{flag},
-                                                          #{views},#{appreciation},#{shareStatement},#{commentabled},
-                                                          #{published},#{recommend},#{createTime},#{updateTime},#{typeId},
-                                                          #{userId},#{description},#{tagIds})
+                          commentabled, published, recommend, create_time, update_time, type_id, user_id,
+                          description, tag_ids)
+        VALUES (#{id}, #{title}, #{content}, #{firstPicture}, #{flag},
+                #{views}, #{appreciation}, #{shareStatement}, #{commentabled},
+                #{published}, #{recommend}, #{createTime}, #{updateTime}, #{typeId},
+                #{userId}, #{description}, #{tagIds})
     </insert>
 
-    <select id="findByBlogId" parameterType="long" resultType="blog">
-        select * from blog where id = #{id}
+    <select id="findByBlogId" parameterType="long" resultMap="blogType">
+        select b.*, t.id as tid, t.name, u.nickname, u.username
+        from blog b,
+             type t,
+             user u
+        where b.type_id = t.id
+          and u.id = b.user_id
+          and b.id = #{id}
+        order by b.update_time desc
     </select>
 
     <insert id="updateBlog" parameterType="blog">
-        update blog set title=#{title},content=#{content},first_picture=#{firstPicture},flag=#{flag},
-                             appreciation=#{appreciation},share_statement=#{shareStatement},commentabled=#{commentabled},
-                             published=#{published},recommend=#{recommend},update_time=#{updateTime},type_id=#{typeId},
-                             description=#{description},tag_ids=#{tagIds} where id = #{id}
+        update blog
+        set title=#{title},
+            content=#{content},
+            first_picture=#{firstPicture},
+            flag=#{flag},
+            appreciation=#{appreciation},
+            share_statement=#{shareStatement},
+            commentabled=#{commentabled},
+            published=#{published},
+            recommend=#{recommend},
+            update_time=#{updateTime},
+            type_id=#{typeId},
+            description=#{description},
+            tag_ids=#{tagIds}
+        where id = #{id}
     </insert>
 
     <delete id="deleteBlogAndTag" parameterType="long">
-        delete from blog_tags where blog_id = #{id}
+        delete
+        from blog_tags
+        where blog_id = #{id}
     </delete>
 
     <delete id="deleteBlogById" parameterType="long">
-        delete from blog where id=#{id}
+        delete
+        from blog
+        where id = #{id}
     </delete>
 
 </mapper>

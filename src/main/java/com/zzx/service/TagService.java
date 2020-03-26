@@ -23,4 +23,10 @@ public interface TagService {
 
     //根据标签名称查询标签
     Tag findByTagName(String tagName);
+
+    //找到拥有博客条数多的前几个标签
+    List<Tag> findTopTags(Integer size);
+
+    //根据中间表查询这个博客所有的标签
+    List<Tag> findTagsByBlogId(Long id);
 }

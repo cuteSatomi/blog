@@ -25,4 +25,13 @@ public interface BlogService {
 
     //根据条件查询博客
     List<Blog> findByCondition(Integer page, Integer pageSize, SearchBlog searchBlog);
+
+    //查询推荐博客
+    List<Blog> findRecommendTopBlogs(Integer size);
+
+    //首页的查询
+    List<Blog> findByTitleOrContent(Integer page,Integer pageSize,String query);
+
+    //查找并转换博客正文的格式
+    Blog findAndConvert(Long id);
 }

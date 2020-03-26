@@ -27,4 +27,8 @@ public interface BlogDao {
     void saveBlogAndTag(BlogAndTag blogAndTag);
 
     void deleteBlogAndTag(Long id);
+
+    List<Blog> findRecommendTopBlogs(Integer size);
+
+    List<Blog> findByTitleOrContent(String query);
 }

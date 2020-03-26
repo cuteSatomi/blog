@@ -23,4 +23,7 @@ public interface TypeService {
 
     //根据分类名称查询分类
     Type findByTypeName(String typeName);
+
+    //查询拥有博客条数多的前几个分类
+    List<Type> findTopTypes(Integer size);
 }

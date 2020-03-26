@@ -12,7 +12,8 @@
 
 <!--导航-->
 <!--这是最外面的一整条黑条-->
-<nav th:replace="_fragments::menu(1)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small animated slideInLeft">
+<nav th:replace="_fragments::menu(1)"
+     class="ui inverted attached segment m-padded-tb-mini m-shadow-small animated slideInLeft">
     <!--这是定义了一个容器-->
     <div class="ui container">
         <div class="ui inverted secondary stackable menu">
@@ -53,20 +54,24 @@
                             <h2 class="ui teal header">博客</h2>
                         </div>
                         <div class="right aligned column">
-                            共 <h2 class="ui orange header m-text-lined m-text-thin">14</h2> 篇
+                            共 <h2 class="ui orange header m-text-lined m-text-thin" th:text="${page.total}">14</h2> 篇
                         </div>
                     </div>
                 </div>
 
                 <!--博客的内容预览-->
                 <div class="ui attached segment">
-                    <div class="ui padded vertical segment m-padded-tb-large m-mobile-lr-clear">
-                        <div class="ui mobile reversed stackable grid">
+                    <div th:each="blog:${page.list}"
+                         class="ui padded vertical segment m-padded-tb-large m-mobile-lr-clear">
+                        <div class="ui middle aligned mobile reversed stackable grid">
 
                             <!--左边是正文的预览-->
                             <div class="eleven wide column">
-                                <h3 class="ui header">事出总是突然的，而理由则是后来加上去的。</h3>
-                                <p class="m-text">
+                                <h3 class="ui header">
+                                    <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="m-black"
+                                       th:text="${blog.title}">事出总是突然的，而理由则是后来加上去的。
+                                    </a></h3>
+                                <p class="m-text" th:text="|${blog.description}......|">
                                     人的命运到底是沉浮在像云一样已经决定好的潮流之中，还是能够跟随着自己所选择的潮流走的东西呢？不管选择哪条路，最后可能都会走到同样的终点。但是当选择了后者时，人们就可以努力地为活着的目的努力，而拥有这种想法的人才是真正的强者。</p>
                                 <!--此处有作者,最后修改时间等的布局,按照11:5的比例-->
                                 <div class="ui stackable grid">
@@ -77,24 +82,27 @@
                                             <div class="item">
                                                 <img src="https://unsplash.it/100/100?image=1013" alt=""
                                                      class="ui avatar image">
-                                                <div class="content"><a href="#" class="header">zzx</a></div>
+                                                <div class="content" th:text="${blog.user.nickname}"><a href="#"
+                                                                                                        class="header">zzx</a>
+                                                </div>
                                             </div>
 
                                             <!--最后修改时间信息-->
                                             <div class="item">
-                                                <i class="calendar icon"></i>2020-3-18
+                                                <i class="calendar icon"></i><span
+                                                    th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2020-3-18</span>
                                             </div>
 
                                             <!--被浏览次数信息-->
                                             <div class="item">
-                                                <i class="eye icon"></i> 10010
+                                                <i class="eye icon"></i> <span th:text="${blog.views}">10010</span>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!--文章的标签-->
+                                    <!--文章的分类-->
                                     <div class="right aligned five wide column">
-                                        <a href="#" target="_blank"
+                                        <a href="#" target="_blank" th:text="${blog.type.name}"
                                            class="ui teal basic label m-padded-tiny m-text-thin">漩涡鸣人</a>
                                     </div>
                                 </div>
@@ -102,306 +110,48 @@
                             <!--右边是图片的预览-->
                             <div class="five wide column">
                                 <a href="#" target="_blank">
-                                    <img src="https://unsplash.it/800/450?image=1013" alt=""
-                                         class="ui rounded image">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui padded vertical segment m-padded-tb-large m-mobile-lr-clear">
-                        <div class="ui mobile reversed stackable grid">
-
-                            <!--左边是正文的预览-->
-                            <div class="eleven wide column">
-                                <h3 class="ui header">事出总是突然的，而理由则是后来加上去的。</h3>
-                                <p class="m-text">
-                                    人的命运到底是沉浮在像云一样已经决定好的潮流之中，还是能够跟随着自己所选择的潮流走的东西呢？不管选择哪条路，最后可能都会走到同样的终点。但是当选择了后者时，人们就可以努力地为活着的目的努力，而拥有这种想法的人才是真正的强者。</p>
-                                <!--此处有作者,最后修改时间等的布局,按照11:5的比例-->
-                                <div class="ui stackable grid">
-                                    <!--作者、最后修改时间等信息-->
-                                    <div class="eleven wide column">
-                                        <div class="ui mini horizontal link list">
-                                            <!--头像以及用户名信息-->
-                                            <div class="item">
-                                                <img src="https://unsplash.it/100/100?image=1013" alt=""
-                                                     class="ui avatar image">
-                                                <div class="content"><a href="#" class="header">zzx</a></div>
-                                            </div>
-
-                                            <!--最后修改时间信息-->
-                                            <div class="item">
-                                                <i class="calendar icon"></i>2020-3-18
-                                            </div>
-
-                                            <!--被浏览次数信息-->
-                                            <div class="item">
-                                                <i class="eye icon"></i> 10010
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--文章的标签-->
-                                    <div class="right aligned five wide column">
-                                        <a href="#" target="_blank"
-                                           class="ui teal basic label m-padded-tiny m-text-thin">漩涡鸣人</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--右边是图片的预览-->
-                            <div class="five wide column">
-                                <a href="#" target="_blank">
-                                    <img src="https://unsplash.it/800/450?image=1013" alt=""
-                                         class="ui rounded image">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui padded vertical segment m-padded-tb-large m-mobile-lr-clear">
-                        <div class="ui mobile reversed stackable grid">
-
-                            <!--左边是正文的预览-->
-                            <div class="eleven wide column">
-                                <h3 class="ui header">事出总是突然的，而理由则是后来加上去的。</h3>
-                                <p class="m-text">
-                                    人的命运到底是沉浮在像云一样已经决定好的潮流之中，还是能够跟随着自己所选择的潮流走的东西呢？不管选择哪条路，最后可能都会走到同样的终点。但是当选择了后者时，人们就可以努力地为活着的目的努力，而拥有这种想法的人才是真正的强者。</p>
-                                <!--此处有作者,最后修改时间等的布局,按照11:5的比例-->
-                                <div class="ui stackable grid">
-                                    <!--作者、最后修改时间等信息-->
-                                    <div class="eleven wide column">
-                                        <div class="ui mini horizontal link list">
-                                            <!--头像以及用户名信息-->
-                                            <div class="item">
-                                                <img src="https://unsplash.it/100/100?image=1013" alt=""
-                                                     class="ui avatar image">
-                                                <div class="content"><a href="#" class="header">zzx</a></div>
-                                            </div>
-
-                                            <!--最后修改时间信息-->
-                                            <div class="item">
-                                                <i class="calendar icon"></i>2020-3-18
-                                            </div>
-
-                                            <!--被浏览次数信息-->
-                                            <div class="item">
-                                                <i class="eye icon"></i> 10010
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--文章的标签-->
-                                    <div class="right aligned five wide column">
-                                        <a href="#" target="_blank"
-                                           class="ui teal basic label m-padded-tiny m-text-thin">漩涡鸣人</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--右边是图片的预览-->
-                            <div class="five wide column">
-                                <a href="#" target="_blank">
-                                    <img src="https://unsplash.it/800/450?image=1013" alt=""
-                                         class="ui rounded image">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui padded vertical segment m-padded-tb-large m-mobile-lr-clear">
-                        <div class="ui mobile reversed stackable grid">
-
-                            <!--左边是正文的预览-->
-                            <div class="eleven wide column">
-                                <h3 class="ui header">事出总是突然的，而理由则是后来加上去的。</h3>
-                                <p class="m-text">
-                                    人的命运到底是沉浮在像云一样已经决定好的潮流之中，还是能够跟随着自己所选择的潮流走的东西呢？不管选择哪条路，最后可能都会走到同样的终点。但是当选择了后者时，人们就可以努力地为活着的目的努力，而拥有这种想法的人才是真正的强者。</p>
-                                <!--此处有作者,最后修改时间等的布局,按照11:5的比例-->
-                                <div class="ui stackable grid">
-                                    <!--作者、最后修改时间等信息-->
-                                    <div class="eleven wide column">
-                                        <div class="ui mini horizontal link list">
-                                            <!--头像以及用户名信息-->
-                                            <div class="item">
-                                                <img src="https://unsplash.it/100/100?image=1013" alt=""
-                                                     class="ui avatar image">
-                                                <div class="content"><a href="#" class="header">zzx</a></div>
-                                            </div>
-
-                                            <!--最后修改时间信息-->
-                                            <div class="item">
-                                                <i class="calendar icon"></i>2020-3-18
-                                            </div>
-
-                                            <!--被浏览次数信息-->
-                                            <div class="item">
-                                                <i class="eye icon"></i> 10010
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--文章的标签-->
-                                    <div class="right aligned five wide column">
-                                        <a href="#" target="_blank"
-                                           class="ui teal basic label m-padded-tiny m-text-thin">漩涡鸣人</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--右边是图片的预览-->
-                            <div class="five wide column">
-                                <a href="#" target="_blank">
-                                    <img src="https://unsplash.it/800/450?image=1013" alt=""
-                                         class="ui rounded image">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui padded vertical segment m-padded-tb-large m-mobile-lr-clear">
-                        <div class="ui mobile reversed stackable grid">
-
-                            <!--左边是正文的预览-->
-                            <div class="eleven wide column">
-                                <h3 class="ui header">事出总是突然的，而理由则是后来加上去的。</h3>
-                                <p class="m-text">
-                                    人的命运到底是沉浮在像云一样已经决定好的潮流之中，还是能够跟随着自己所选择的潮流走的东西呢？不管选择哪条路，最后可能都会走到同样的终点。但是当选择了后者时，人们就可以努力地为活着的目的努力，而拥有这种想法的人才是真正的强者。</p>
-                                <!--此处有作者,最后修改时间等的布局,按照11:5的比例-->
-                                <div class="ui stackable grid">
-                                    <!--作者、最后修改时间等信息-->
-                                    <div class="eleven wide column">
-                                        <div class="ui mini horizontal link list">
-                                            <!--头像以及用户名信息-->
-                                            <div class="item">
-                                                <img src="https://unsplash.it/100/100?image=1013" alt=""
-                                                     class="ui avatar image">
-                                                <div class="content"><a href="#" class="header">zzx</a></div>
-                                            </div>
-
-                                            <!--最后修改时间信息-->
-                                            <div class="item">
-                                                <i class="calendar icon"></i>2020-3-18
-                                            </div>
-
-                                            <!--被浏览次数信息-->
-                                            <div class="item">
-                                                <i class="eye icon"></i> 10010
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--文章的标签-->
-                                    <div class="right aligned five wide column">
-                                        <a href="#" target="_blank"
-                                           class="ui teal basic label m-padded-tiny m-text-thin">漩涡鸣人</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--右边是图片的预览-->
-                            <div class="five wide column">
-                                <a href="#" target="_blank">
-                                    <img src="https://unsplash.it/800/450?image=1013" alt=""
-                                         class="ui rounded image">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui padded vertical segment m-padded-tb-large m-mobile-lr-clear">
-                        <div class="ui mobile reversed stackable grid">
-
-                            <!--左边是正文的预览-->
-                            <div class="eleven wide column">
-                                <h3 class="ui header">事出总是突然的，而理由则是后来加上去的。</h3>
-                                <p class="m-text">
-                                    人的命运到底是沉浮在像云一样已经决定好的潮流之中，还是能够跟随着自己所选择的潮流走的东西呢？不管选择哪条路，最后可能都会走到同样的终点。但是当选择了后者时，人们就可以努力地为活着的目的努力，而拥有这种想法的人才是真正的强者。</p>
-                                <!--此处有作者,最后修改时间等的布局,按照11:5的比例-->
-                                <div class="ui stackable grid">
-                                    <!--作者、最后修改时间等信息-->
-                                    <div class="eleven wide column">
-                                        <div class="ui mini horizontal link list">
-                                            <!--头像以及用户名信息-->
-                                            <div class="item">
-                                                <img src="https://unsplash.it/100/100?image=1013" alt=""
-                                                     class="ui avatar image">
-                                                <div class="content"><a href="#" class="header">zzx</a></div>
-                                            </div>
-
-                                            <!--最后修改时间信息-->
-                                            <div class="item">
-                                                <i class="calendar icon"></i>2020-3-18
-                                            </div>
-
-                                            <!--被浏览次数信息-->
-                                            <div class="item">
-                                                <i class="eye icon"></i> 10010
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--文章的标签-->
-                                    <div class="right aligned five wide column">
-                                        <a href="#" target="_blank"
-                                           class="ui teal basic label m-padded-tiny m-text-thin">漩涡鸣人</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--右边是图片的预览-->
-                            <div class="five wide column">
-                                <a href="#" target="_blank">
-                                    <img src="https://unsplash.it/800/450?image=1013" alt=""
-                                         class="ui rounded image">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui padded vertical segment m-padded-tb-large m-mobile-lr-clear">
-                        <div class="ui mobile reversed stackable grid">
-
-                            <!--左边是正文的预览-->
-                            <div class="eleven wide column">
-                                <h3 class="ui header">事出总是突然的，而理由则是后来加上去的。</h3>
-                                <p class="m-text">
-                                    人的命运到底是沉浮在像云一样已经决定好的潮流之中，还是能够跟随着自己所选择的潮流走的东西呢？不管选择哪条路，最后可能都会走到同样的终点。但是当选择了后者时，人们就可以努力地为活着的目的努力，而拥有这种想法的人才是真正的强者。</p>
-                                <!--此处有作者,最后修改时间等的布局,按照11:5的比例-->
-                                <div class="ui stackable grid">
-                                    <!--作者、最后修改时间等信息-->
-                                    <div class="eleven wide column">
-                                        <div class="ui mini horizontal link list">
-                                            <!--头像以及用户名信息-->
-                                            <div class="item">
-                                                <img src="https://unsplash.it/100/100?image=1013" alt=""
-                                                     class="ui avatar image">
-                                                <div class="content"><a href="#" class="header">zzx</a></div>
-                                            </div>
-
-                                            <!--最后修改时间信息-->
-                                            <div class="item">
-                                                <i class="calendar icon"></i>2020-3-18
-                                            </div>
-
-                                            <!--被浏览次数信息-->
-                                            <div class="item">
-                                                <i class="eye icon"></i> 10010
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--文章的标签-->
-                                    <div class="right aligned five wide column">
-                                        <a href="#" target="_blank"
-                                           class="ui teal basic label m-padded-tiny m-text-thin">漩涡鸣人</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--右边是图片的预览-->
-                            <div class="five wide column">
-                                <a href="#" target="_blank">
-                                    <img src="https://unsplash.it/800/450?image=1013" alt=""
-                                         class="ui rounded image">
+                                    <img src="https://tva1.sinaimg.cn/large/00831rSTgy1gcj93y1wiej31hc0u0npd.jpg" alt=""
+                                         th:src="@{${blog.firstPicture}}" class="ui rounded image">
                                 </a>
                             </div>
                         </div>
                     </div>
 
+                    <!--分页条-->
+                    <div class="ui middle aligned mobile reversed stackable m-padded-tb" align="center" th:if="${page.pages}>1">
+                        <div class="ui mini centered pagination menu">
+                            <div class="column">
+                                <a class="item" th:href="@{/(page=1,pageSize=${page.pageSize})}">首页</a>
+                            </div>
+                            <div class="column">
+                                <a class="icon item"
+                                   th:href="@{/(page=${page.pageNum}-1,pageSize=${page.pageSize})}">
+                                    <i class="left chevron icon"></i>
+                                </a>
+                            </div>
+                            <!--中间的页码-->
+                            <th:block th:each="pageNo:${#numbers.sequence(1,page.pages)}">
+                                <a class="item teal" th:classappend="${pageNo==page.pageNum}?'active'"
+                                   th:href="@{/(page=${pageNo},pageSize=${page.pageSize})}"
+                                   th:text="${pageNo}">1</a>
+                            </th:block>
 
+                            <div class="column">
+                                <a class="icon item"
+                                   th:href="@{/(page=${page.pageNum}+1,pageSize=${page.pageSize})}">
+                                    <i class="right chevron icon"></i>
+                                </a>
+                            </div>
+                            <div class="column">
+                                <a class="item" th:href="@{/(page=${page.pages},pageSize=${page.pageSize})}">末页</a>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
 
                 <!--这里放置上下翻页的按钮-->
-                <div class="ui bottom attached segment">
+                <!--<div class="ui bottom attached segment">
                     <div class="ui middle aligned two column grid">
                         <div class="column">
                             <a href="#" class="ui teal basic button">上一页</a>
@@ -410,7 +160,11 @@
                             <a href="#" class="ui teal basic button">下一页</a>
                         </div>
                     </div>
-                </div>
+                </div>-->
+
+
+
+
             </div>
 
 
@@ -431,30 +185,11 @@
                     <!--具体的分类-->
                     <div class="ui teal segment">
                         <div class="ui fluid vertical menu">
-                            <a href="#" class="item">
-                                学习日志
-                                <div class="ui label teal left pointing basic">18</div>
+                            <a href="#" th:href="@{/types/{id}(id=${type.id})}" target="_blank" class="item" th:each="type:${types}">
+                                <span th:text="${type.name}">学习日志</span>
+                                <div class="ui label teal left pointing basic" th:text="${type.blogNums}">18</div>
                             </a>
-                            <a href="#" class="item">
-                                学习日志
-                                <div class="ui label teal left pointing basic">18</div>
-                            </a>
-                            <a href="#" class="item">
-                                学习日志
-                                <div class="ui label teal left pointing basic">18</div>
-                            </a>
-                            <a href="#" class="item">
-                                学习日志
-                                <div class="ui label teal left pointing basic">18</div>
-                            </a>
-                            <a href="#" class="item">
-                                学习日志
-                                <div class="ui label teal left pointing basic">18</div>
-                            </a>
-                            <a href="#" class="item">
-                                学习日志
-                                <div class="ui label teal left pointing basic">18</div>
-                            </a>
+
                         </div>
 
                     </div>
@@ -474,38 +209,12 @@
 
                     <!--具体的标签-->
                     <div class="ui teal segment">
-                        <a href="#" target="_blank" class="ui label teal basic left pointing m-margin-tb-tiny">
-                            方法论
-                            <div class="detail">8</div>
+                        <a href="#"  th:href="@{/tags/{id}(id=${tag.id})}" target="_blank" th:each="tag:${tags}"
+                           class="ui label teal basic left pointing m-margin-tb-tiny">
+                            <span th:text="${tag.name}">方法论</span>
+                            <div class="detail" th:text="${tag.blogNums}">8</div>
                         </a>
-                        <a href="#" target="_blank" class="ui label teal basic left pointing m-margin-tb-tiny">
-                            方法论
-                            <div class="detail">8</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui label teal basic left pointing m-margin-tb-tiny">
-                            方法论
-                            <div class="detail">8</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui label teal basic left pointing m-margin-tb-tiny">
-                            方法论
-                            <div class="detail">8</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui label teal basic left pointing m-margin-tb-tiny">
-                            方法论
-                            <div class="detail">8</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui label teal basic left pointing m-margin-tb-tiny">
-                            方法论
-                            <div class="detail">8</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui label teal basic left pointing m-margin-tb-tiny">
-                            方法论
-                            <div class="detail">8</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui label teal basic left pointing m-margin-tb-tiny">
-                            方法论
-                            <div class="detail">8</div>
-                        </a>
+
                     </div>
 
                 </div>
@@ -516,14 +225,27 @@
                     <div class="ui secondary segment">
                         <i class="bookmark icon"></i>最新推荐
                     </div>
-                    <div class="ui segment"><a href="#" target="_blank" class="m-black m-text-thin">心机呲挖一呲摸一多呲</a></div>
-                    <div class="ui segment"><a href="#" target="_blank" class="m-black m-text-thin">心机呲挖一呲摸一多呲</a></div>
-                    <div class="ui segment"><a href="#" target="_blank" class="m-black m-text-thin">心机呲挖一呲摸一多呲</a></div>
-                    <div class="ui segment"><a href="#" target="_blank" class="m-black m-text-thin">心机呲挖一呲摸一多呲</a></div>
-                    <div class="ui segment"><a href="#" target="_blank" class="m-black m-text-thin">心机呲挖一呲摸一多呲</a></div>
-                    <div class="ui segment"><a href="#" target="_blank" class="m-black m-text-thin">心机呲挖一呲摸一多呲</a></div>
-                    <div class="ui segment"><a href="#" target="_blank" class="m-black m-text-thin">心机呲挖一呲摸一多呲</a></div>
-                    <div class="ui segment"><a href="#" target="_blank" class="m-black m-text-thin">心机呲挖一呲摸一多呲</a></div>
+
+                    <div th:each="recommendBlog:${recommendBlogs}" class="ui segment">
+                        <a href="#" th:href="@{/blog/{id}(id=${recommendBlog.id})}" th:text="${recommendBlog.title}" target="_blank" class="m-black m-text-thin">心机呲挖一呲摸一多呲</a>
+                    </div>
+
+                    <!--/*-->
+                    <div class="ui segment"><a href="#" target="_blank" class="m-black m-text-thin">心机呲挖一呲摸一多呲</a>
+                    </div>
+                    <div class="ui segment"><a href="#" target="_blank" class="m-black m-text-thin">心机呲挖一呲摸一多呲</a>
+                    </div>
+                    <div class="ui segment"><a href="#" target="_blank" class="m-black m-text-thin">心机呲挖一呲摸一多呲</a>
+                    </div>
+                    <div class="ui segment"><a href="#" target="_blank" class="m-black m-text-thin">心机呲挖一呲摸一多呲</a>
+                    </div>
+                    <div class="ui segment"><a href="#" target="_blank" class="m-black m-text-thin">心机呲挖一呲摸一多呲</a>
+                    </div>
+                    <div class="ui segment"><a href="#" target="_blank" class="m-black m-text-thin">心机呲挖一呲摸一多呲</a>
+                    </div>
+                    <div class="ui segment"><a href="#" target="_blank" class="m-black m-text-thin">心机呲挖一呲摸一多呲</a>
+                    </div>
+                    <!--*/-->
                 </div>
 
             </div>
@@ -555,7 +277,7 @@
                 <div class="ui inverted link list">
                     <div class="item">
                         <img src="../static/images/wechat_color.jpeg" class="ui rounded image" alt=""
-                            th:src="@{/images/wechat_color.jpeg}" style="width: 130px">
+                             th:src="@{/images/wechat_color.jpeg}" style="width: 130px">
                     </div>
                 </div>
             </div>
@@ -592,8 +314,8 @@
 </footer>
 
 <!--/*/<th:block th:replace="_fragments::script">/*/-->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
 <!--/*/</th:block>/*/-->
 
 
@@ -631,11 +353,11 @@
             MusicDivShow.style.display = 'block';//控制层显示
         };
 
-       /* <!-- 天气预报 -->
-        WIDGET = {FID: 'EtgqPWMbdv'}
-        var script4 = document.createElement('script');
-        script4.type = 'text/javascript';
-        script4.src = 'https://apip.weatherdt.com/float/static/js/r.js?v=1111';*/
+        /* <!-- 天气预报 -->
+         WIDGET = {FID: 'EtgqPWMbdv'}
+         var script4 = document.createElement('script');
+         script4.type = 'text/javascript';
+         script4.src = 'https://apip.weatherdt.com/float/static/js/r.js?v=1111';*/
 
 
         var script3 = document.createElement('script');

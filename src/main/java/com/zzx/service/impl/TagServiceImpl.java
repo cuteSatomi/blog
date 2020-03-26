@@ -47,4 +47,14 @@ public class TagServiceImpl implements TagService {
     public Tag findByTagName(String tagName) {
         return tagDao.findByTagName(tagName);
     }
+
+    @Override
+    public List<Tag> findTopTags(Integer size) {
+        return tagDao.findTopTags(size);
+    }
+
+    @Override
+    public List<Tag> findTagsByBlogId(Long id) {
+        return tagDao.findTagsByBlogId(id);
+    }
 }

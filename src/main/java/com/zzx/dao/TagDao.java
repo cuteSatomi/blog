@@ -27,4 +27,11 @@ public interface TagDao {
 
     @Select("select * from tag where name=#{tagName}")
     public Tag findByTagName(String tagName);
+
+    @Select("select t.*,count(t.id) as blogNums from blog_tags bt left outer join blog b on bt.blog_id=b.id " +
+            " left outer join tag t on t.id=bt.tag_id group by id order by blogNums desc limit 0,#{size}")
+    public List<Tag> findTopTags(Integer size);
+
+    @Select("select * from tag where id in( select tag_id from blog_tags where blog_id = #{id})")
+    List<Tag> findTagsByBlogId(Long id);
 }

@@ -26,4 +26,7 @@ public interface TypeDao {
 
     @Select("select * from type where name=#{name}")
     Type findByTypeName(String typeName);
+
+    @Select("select t.*,count(t.id)as blogNums from blog b left outer join type t on t.id=b.type_id group by t.id order by blogNums desc limit 0,#{size}")
+    List<Type> findTopTypes(Integer size);
 }
