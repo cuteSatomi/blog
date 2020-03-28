@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzx.dao.CommentDao">
+
+    <select id="findAllParentCommentsByBlogId" resultType="comment" parameterType="long">
+        select * from comment where blog_id=#{blogId} and parent_comment_id=-1 order by create_time asc
+    </select>
+
+    <select id="findById" parameterType="long" resultType="comment">
+        select * from comment where id = #{id}
+    </select>
+
+    <select id="findCommentsByParentId" parameterType="long" resultType="comment">
+        select * from comment where parent_comment_id = #{parentId} order by create_time asc
+    </select>
+
+    <insert id="saveComment" parameterType="comment">
+        insert into comment (nickname, email, content, avatar, create_time, blog_id, parent_comment_id)
+         values (#{nickname},#{email},#{content},#{avatar},#{createTime},#{blogId},#{parentCommentId})
+    </insert>
+
+</mapper>

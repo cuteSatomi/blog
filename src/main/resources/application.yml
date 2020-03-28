@@ -43,4 +43,4 @@ pagehelper:
   params: count=countSql
 
 
-comment.avatar: /image/1.jpg
+comment.avatar: /images/avatar.png

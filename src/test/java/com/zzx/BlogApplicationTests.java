@@ -11,14 +11,9 @@ class BlogApplicationTests {
 
     @Test
     void contextLoads() {
+        List<String> list = null;
 
-        String str = "1";
-        List list = new ArrayList<Long>();
-        for (String tagId : str.split(",")) {
-            list.add(Long.valueOf(tagId));
-        }
-
-        System.out.println(list);
+        System.out.println(list.size()>0);
 
     }
 

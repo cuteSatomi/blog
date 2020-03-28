@@ -31,4 +31,6 @@ public interface BlogDao {
     List<Blog> findRecommendTopBlogs(Integer size);
 
     List<Blog> findByTitleOrContent(String query);
+
+    void updateViewsById(Long id);
 }

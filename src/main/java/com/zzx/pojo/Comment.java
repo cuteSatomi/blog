@@ -25,12 +25,12 @@ public class Comment {
     private Long parentCommentId;
     private String parentNickname;
 
+    //判断是否是管理员的标记
+    private boolean adminComment;
+
     //回复评论
     private List<Comment> replyComments;
     private Comment parentComment;
-
-
-
 
 
 }

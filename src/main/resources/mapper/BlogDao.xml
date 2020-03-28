@@ -20,6 +20,7 @@
         <result property="updateTime" column="update_time"/>
         <result property="description" column="description"/>
         <result property="typeId" column="type_id"/>
+        <result property="tagIds" column="tag_ids"/>
         <association property="type" javaType="type">
             <id property="id" column="tid"/>
             <result property="name" column="name"/>
@@ -125,5 +126,9 @@
         from blog
         where id = #{id}
     </delete>
+
+    <update id="updateViewsById" parameterType="long">
+        update blog set views = views+1 where id = #{id}
+    </update>
 
 </mapper>
