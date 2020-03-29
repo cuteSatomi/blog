@@ -5,6 +5,7 @@ import com.zzx.pojo.Blog;
 import com.zzx.pojo.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BlogService {
 
@@ -34,4 +35,16 @@ public interface BlogService {
 
     //查找并转换博客正文的格式
     Blog findAndConvert(Long id);
+
+    //根据分类id查询博客
+    List<Blog> findByTypeId(Integer page,Integer pageSize,Long id);
+
+    //根据标签id查询博客
+    List<Blog> findByTagId(Integer page, Integer pageSize, Long id);
+
+    //查询出所有的归档博客
+    Map<String, List<Blog>> archiveBlogs();
+
+    //查询出博客的条数
+    Long countBlog();
 }

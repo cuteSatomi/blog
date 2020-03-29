@@ -33,4 +33,14 @@ public interface BlogDao {
     List<Blog> findByTitleOrContent(String query);
 
     void updateViewsById(Long id);
+
+    List<Blog> findByTypeId(Long typeId);
+
+    List<Blog> findByTagId(Long tagId);
+
+    List<String> findGroupYear();
+
+    List<Blog> findBlogsByYear(String year);
+
+    Long countBlog();
 }

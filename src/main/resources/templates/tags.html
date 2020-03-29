@@ -49,17 +49,19 @@
                     <h2 class="ui teal header">标签</h2>
                 </div>
                 <div class="right aligned column">
-                    共 <h2 class="ui orange header m-text-lined m-text-thin">14</h2> 个
+                    共 <h2 class="ui orange header m-text-lined m-text-thin" th:text="${#arrays.length(tags)}">14</h2> 个
                 </div>
             </div>
         </div>
 
         <!--分类的具体标签 -->
         <div class="ui attached segment m-padded-tb-large animated fadeInDown">
-            <a href="#" target="_blank" class="ui label teal left pointing basic large m-margin-tb-tiny">
-                方法论
-                <div class="detail">8</div>
+            <a href="#" target="_self" th:href="@{/tags/{id}(id=${tag.id})}" class="ui label left pointing basic large m-margin-tb-tiny"
+               th:classappend="${tag.id==activeTagId}?'teal'" th:each="tag:${tags}">
+                <span th:text="${tag.name}">方法论</span>
+                <div class="detail" th:text="${tag.blogNums}">8</div>
             </a>
+            <!--/*-->
             <a href="#" target="_blank" class="ui label left pointing basic large m-margin-tb-tiny">
                 方法论
                 <div class="detail">8</div>
@@ -92,72 +94,72 @@
                 方法论
                 <div class="detail">8</div>
             </a>
-
+            <!--*/-->
 
         </div>
 
         <!--博客的列表-->
         <div class="ui teal top attached segment animated bounceInRight">
-            <div class="ui padded vertical segment m-padded-tb-large m-mobile-lr-clear">
-                <div class="ui mobile reversed stackable grid">
+            <div class="ui padded vertical segment m-padded-tb-large m-mobile-lr-clear" th:each="blog:${page.list}">
+                <div class="ui middle aligned mobile reversed stackable grid">
 
                     <!--左边是正文的预览-->
                     <div class="eleven wide column">
-                        <h3 class="ui header">事出总是突然的，而理由则是后来加上去的。</h3>
-                        <p class="m-text">
+                        <h3 class="ui header">
+                            <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="m-black"
+                               th:text="${blog.title}">事出总是突然的，而理由则是后来加上去的。
+                            </a></h3>
+                        <p class="m-text" th:text="|${blog.description}......|">
                             人的命运到底是沉浮在像云一样已经决定好的潮流之中，还是能够跟随着自己所选择的潮流走的东西呢？不管选择哪条路，最后可能都会走到同样的终点。但是当选择了后者时，人们就可以努力地为活着的目的努力，而拥有这种想法的人才是真正的强者。</p>
                         <!--此处有作者,最后修改时间等的布局,按照11:5的比例-->
                         <div class="ui stackable grid">
-                            <!--分为两行，第一行放置作者信息以及文章分类-->
-                            <div class="row">
-                                <!--作者、最后修改时间等信息-->
-                                <div class="eleven wide column">
-                                    <div class="ui mini horizontal link list">
-                                        <!--头像以及用户名信息-->
-                                        <div class="item">
-                                            <img src="https://unsplash.it/100/100?image=1013" alt=""
-                                                th:src="@{https://unsplash.it/100/100?image=1013}" class="ui avatar image">
-                                            <div class="content"><a href="#" class="header">zzx</a></div>
-                                        </div>
+                            <!--作者、最后修改时间等信息-->
+                            <div class="eleven wide column">
+                                <div class="ui mini horizontal link list">
+                                    <!--头像以及用户名信息-->
+                                    <div class="item">
+                                        <img src="https://unsplash.it/100/100?image=1013" alt="" class="ui avatar image">
+                                        <div class="content"><a href="#" class="header">
+                                            <span th:text="${blog.user.nickname}">zzx</span></a></div>
+                                    </div>
 
-                                        <!--最后修改时间信息-->
-                                        <div class="item">
-                                            <i class="calendar icon"></i>2020-3-18
-                                        </div>
+                                    <!--最后修改时间信息-->
+                                    <div class="item">
+                                        <i class="calendar icon"></i><span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2020-3-18</span>
+                                    </div>
 
-                                        <!--被浏览次数信息-->
-                                        <div class="item">
-                                            <i class="eye icon"></i> 10010
-                                        </div>
+                                    <!--被浏览次数信息-->
+                                    <div class="item">
+                                        <i class="eye icon"></i> <span th:text="${blog.views}">10010</span>
                                     </div>
                                 </div>
-                                <!--文章的标签-->
-                                <div class="right aligned five wide column">
-                                    <a href="#" target="_blank"
-                                       class="ui teal basic label m-padded-tiny m-text-thin">漩涡鸣人</a>
-                                </div>
                             </div>
 
-                            <!--第二行放置文章标签信息-->
+                            <!--文章的标签-->
+                            <div class="right aligned five wide column">
+                                <a href="#" target="_blank"
+                                   class="ui teal basic label m-padded-tiny" th:text="${blog.type.name}">漩涡鸣人</a>
+                            </div>
                             <div class="row">
                                 <div class="column">
-                                    <a href="#" class="ui basic teal left pointing label m-padded-mini m-text-thin">宇智波佐助</a>
+                                    <a href="#" th:href="@{/tags/{id}(id=${tag.id})}" class="ui  basic left pointing label m-padded-mini m-text-thin" th:classappend="${tag.id==activeTagId} ? 'teal'" th:each="tag : ${blog.tags}" th:text="${tag.name}">方法论</a>
                                 </div>
                             </div>
-
-
-
                         </div>
+
                     </div>
                     <!--右边是图片的预览-->
                     <div class="five wide column">
                         <a href="#" target="_blank">
                             <img src="https://unsplash.it/800/450?image=1013" alt=""
-                                th:src="@{https://unsplash.it/800/450?image=1013}" class="ui rounded image">
+                                 th:src="@{${blog.firstPicture}}" class="ui rounded image">
                         </a>
                     </div>
                 </div>
             </div>
+
+
+            <!--/*-->
             <div class="ui padded vertical segment m-padded-tb-large m-mobile-lr-clear">
                 <div class="ui mobile reversed stackable grid">
 
@@ -518,9 +520,44 @@
                     </div>
                 </div>
             </div>
+            <!--*/-->
+        </div>
+
+
+        <!--分页条-->
+        <div class="ui middle aligned mobile reversed stackable m-padded-tb" align="center" th:if="${page.pages}>1">
+            <div class="ui mini centered pagination menu">
+                <div class="column">
+                    <a class="item" th:href="@{'/tags/'+${activeTagId}(page=1,pageSize=${page.pageSize})}">首页</a>
+                </div>
+                <div class="column">
+                    <a class="icon item"
+                       th:href="@{'/tags/'+${activeTagId}(page=${page.pageNum}-1,pageSize=${page.pageSize})}">
+                        <i class="left chevron icon"></i>
+                    </a>
+                </div>
+                <!--中间的页码-->
+                <th:block th:each="pageNo:${#numbers.sequence(1,page.pages)}">
+                    <a class="item teal" th:classappend="${pageNo==page.pageNum}?'active'"
+                       th:href="@{'/tags/'+${activeTagId}(page=${pageNo},pageSize=${page.pageSize})}"
+                       th:text="${pageNo}">1</a>
+                </th:block>
+
+                <div class="column">
+                    <a class="icon item"
+                       th:href="@{'/tags/'+${activeTagId}(page=${page.pageNum}+1,pageSize=${page.pageSize})}">
+                        <i class="right chevron icon"></i>
+                    </a>
+                </div>
+                <div class="column">
+                    <a class="item" th:href="@{'/tags/'+${activeTagId}(page=${page.pages},pageSize=${page.pageSize})}">末页</a>
+                </div>
+            </div>
+
         </div>
 
         <!--这里放置上下翻页的按钮-->
+        <!--/*-->
         <div class="ui bottom attached segment animated zoomIn">
             <div class="ui middle aligned two column grid">
                 <div class="column">
@@ -531,6 +568,7 @@
                 </div>
             </div>
         </div>
+        <!--*/-->
 
     </div>
 </div>

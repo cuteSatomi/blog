@@ -45,6 +45,7 @@
         select *
         from blog
         where recommend = true
+        order by update_time desc
         limit 0,#{size}
     </select>
 
@@ -128,7 +129,43 @@
     </delete>
 
     <update id="updateViewsById" parameterType="long">
-        update blog set views = views+1 where id = #{id}
+        update blog
+        set views = views + 1
+        where id = #{id}
     </update>
+
+    <select id="findByTypeId" parameterType="long" resultMap="blogType">
+        select b.*, t.id as tid, t.name, u.nickname, u.username
+        from blog b,
+             type t,
+             user u
+        where b.type_id = t.id
+          and u.id = b.user_id
+          and b.type_id = #{typeId}
+        order by b.update_time desc
+    </select>
+
+    <select id="findByTagId" parameterType="long" resultMap="blogType">
+        select b.*, t.id as tid, t.name, u.nickname, u.username
+        from blog b,
+             type t,
+             user u
+        where b.id in (select blog_id from blog_tags where tag_id = #{tagId})
+          and b.type_id = t.id
+          and u.id = b.user_id
+        order by b.update_time desc
+    </select>
+
+    <select id="findGroupYear" resultType="java.lang.String">
+        select DATE_FORMAT(update_time,'%Y')as year from blog group by year order by year desc
+    </select>
+
+    <select id="findBlogsByYear" parameterType="string" resultType="blog">
+        select * from blog where date_format(update_time,'%Y') = #{year}
+    </select>
+
+    <select id="countBlog" resultType="long">
+        select count(*) from blog
+    </select>
 
 </mapper>

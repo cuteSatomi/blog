@@ -13,9 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @Transactional
@@ -112,5 +111,32 @@ public class BlogServiceImpl implements BlogService {
         blog.setContent(MarkdownUtils.markdownToHtmlExtensions(content));
         blogDao.updateViewsById(id);
         return blog;
+    }
+
+    @Override
+    public List<Blog> findByTypeId(Integer page,Integer pageSize,Long typeId) {
+        PageHelper.startPage(page,pageSize);
+        return blogDao.findByTypeId(typeId);
+    }
+
+    @Override
+    public List<Blog> findByTagId(Integer page, Integer pageSize, Long tagId) {
+        PageHelper.startPage(page,pageSize);
+        return blogDao.findByTagId(tagId);
+    }
+
+    @Override
+    public Map<String, List<Blog>> archiveBlogs() {
+        List<String> years = blogDao.findGroupYear();
+        Map<String, List<Blog>> map = new HashMap<>();
+        for (String year : years) {
+            map.put(year,blogDao.findBlogsByYear(year));
+        }
+        return map;
+    }
+
+    @Override
+    public Long countBlog() {
+        return blogDao.countBlog();
     }
 }

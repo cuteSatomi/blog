@@ -65,4 +65,10 @@ public class IndexController {
         model.addAttribute("tags",tagService.findTagsByBlogId(id));
         return "blog";
     }
+
+    @GetMapping("/footer/newblogs")
+    public String newThreeBlogs(Model model){
+        model.addAttribute("newThreeBlogs",blogService.findRecommendTopBlogs(3));
+        return "_fragments :: newThreeBlogs";
+    }
 }

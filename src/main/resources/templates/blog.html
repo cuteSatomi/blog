@@ -514,7 +514,7 @@ h5,h6{font-size:1em;}
         </div>
 
         <!--博客的作者等信息-->
-        <div class="ui positive message attached">
+        <div class="ui positive message attached" th:if="${blog.shareStatement}">
             <div class="ui middle aligned grid">
                 <!--左边作者信息 比例 11:5-->
                 <div class="eleven wide column">
@@ -537,7 +537,7 @@ h5,h6{font-size:1em;}
         </div>
 
         <!--留言区域-->
-        <div class="ui bottom attached segment">
+        <div class="ui bottom attached segment" th:if="${blog.commentabled}">
             <div id="comment-container" class="ui teal segment">
                 <div th:fragment="commentList">
                     <div class="ui threaded comments" style="max-width: 100%;">

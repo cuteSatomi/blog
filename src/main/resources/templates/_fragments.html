@@ -20,10 +20,10 @@
     <div class="ui container">
         <div class="ui inverted secondary stackable menu">
             <h2 class="ui teal header item">Mikasa</h2>
-            <a href="#" class="active m-item item m-mobile-hidden" th:classappend="${n==1}?'active'"><i class="home icon"></i>首页</a>
-            <a href="#" class="m-item item m-mobile-hidden" th:classappend="${n==2}?'active'"><i class="idea icon"></i>分类</a>
-            <a href="#" class="m-item item m-mobile-hidden" th:classappend="${n==3}?'active'"><i class="tags icon"></i>标签</a>
-            <a href="#" class="m-item item m-mobile-hidden" th:classappend="${n==4}?'active'"><i class="clone icon"></i>归档</a>
+            <a href="#" th:href="@{/}" class="m-item item m-mobile-hidden" th:classappend="${n==1}?'active'"><i class="home icon"></i>首页</a>
+            <a href="#" th:href="@{/types/-1}" class="m-item item m-mobile-hidden" th:classappend="${n==2}?'active'"><i class="idea icon"></i>分类</a>
+            <a href="#" th:href="@{/tags/-1}" class="m-item item m-mobile-hidden" th:classappend="${n==3}?'active'"><i class="tags icon"></i>标签</a>
+            <a href="#" th:href="@{/archives}" class="m-item item m-mobile-hidden" th:classappend="${n==4}?'active'"><i class="clone icon"></i>归档</a>
             <a href="#" class="m-item item m-mobile-hidden" th:classappend="${n==5}?'active'"><i class="info icon"></i>关于我</a>
             <!--搜索-->
             <div class="m-item item right m-mobile-hidden">
@@ -58,10 +58,14 @@
             </div>
             <div class="three wide column">
                 <h4 class="ui inverted header">最新博客</h4>
-                <div class="ui inverted link list">
-                    <a href="#" class="item">三笠·阿克曼</a>
-                    <a href="#" class="item">桐谷和人</a>
-                    <a href="#" class="item">亚丝娜</a>
+                <div id="newblog-container">
+                    <div class="ui inverted link list" th:fragment="newThreeBlogs">
+                        <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" th:each="blog:${newThreeBlogs}" th:text="${blog.title}" class="item">三笠·阿克曼</a>
+                        <!--/*-->
+                        <a href="#" class="item">桐谷和人</a>
+                        <a href="#" class="item">亚丝娜</a>
+                        <!--*/-->
+                    </div>
                 </div>
             </div>
             <div class="four wide column">
@@ -91,6 +95,10 @@
     <script src="../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
     <script src="../static/lib/qrcode/qrcode.min.js" th:src="@{/lib/qrcode/qrcode.min.js}"></script>
     <script src="../static/lib/waypoints/jquery.waypoints.min.js" th:src="@{/lib/waypoints/jquery.waypoints.min.js}"></script>
+
+    <script>
+        $("#newblog-container").load(/*[[@{/footer/newblogs}]]*/"/footer/newblogs");
+    </script>
 </th:block>
 
 </body>

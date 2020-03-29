@@ -31,7 +31,7 @@ public class LogAspect {
         String classMethod = joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName();
         Object[] args = joinPoint.getArgs();
         RequestLog requestLog = new RequestLog(url, ip, classMethod, args);
-        logger.info("Request : {}", requestLog);
+        logger.info("请求参数 : {}", requestLog);
     }
 
     @After("log()")
@@ -41,7 +41,7 @@ public class LogAspect {
 
     @AfterReturning(returning = "result",pointcut = "log()")
     public void doAfterRuturn(Object result) {
-        logger.info("Result : {}", result);
+        logger.info("相应参数 : {}", result);
     }
 
     //定义日志的内部类来接收日志数据
